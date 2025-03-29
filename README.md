@@ -2,21 +2,18 @@
 Manual video annotation is a slow, labor-intensive, and costly process, often leading to inconsistencies. Traditional methods struggle to scale efficiently, making it difficult to generate high-quality, large-scale annotated datasets across different domains.  
   
 
-## 📜 **Table of Contents**
-1.  [Introduction](#introduction)
-   
-3.  [Video Processing Features](#video-processing-features)
-5.  [Tech Stack](#tech-stack)
-6.  [Installation](#installation)
-7.  [Usage](#usage)
-8.  [API Endpoints](#api-endpoints)
-9.  [Project Structure](#project-structure)
+## 🌜 **Table of Contents**
+1.  [Introduction](#1-introduction)
+2.  [Video Processing Features](#2-video-processing-features)
+3.  [Tech Stack](#3-tech-stack)
+4.  [Installation](#4-installation)
+5.  [Usage](#5-usage)
+6.  [API Endpoints](#6-api-endpoints)
+7.  [Project Structure](#7-project-structure)
 
 ---
-
   
 ## 📌 **1. Introduction**
-
 
 ### 💡 **Solution Overview**  
 This **Auto Video Annotation System** leverages state-of-the-art AI models to automate video labeling, improving efficiency and scalability while maintaining accuracy.
@@ -30,14 +27,13 @@ This **Auto Video Annotation System** leverages state-of-the-art AI models to au
 
 ✅ **Reliable Info Monitoring** – Includes (*Supervision*) for annotation handling, and robust logging for debugging and consistency.  
 
-
 ---
 
 ## 🎥 **2. Video Processing Features**
 
 🎯 **Zero-shot detection → labeling → segmentation**  
 
-🎞️ **Customizable FPS** – Users can adjust the frames per second (FPS) to optimize processing time.  
+🎮 **Customizable FPS** – Users can adjust the frames per second (FPS) to optimize processing time.  
 
 ⏸️ **Interrupts for annotation refinement**:  
    🔹 **STOPPROCESS** – Users can stop the segmentation at any point and retrieve the segmented video up to that point.  
@@ -88,7 +84,7 @@ bash setup.sh
 python App.py
 ```
 
-### 📜 **API Calls**  
+### 📝 **API Calls**  
 Check the `api_call.txt` file for example API request commands.
 
 ---
