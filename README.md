@@ -3,11 +3,11 @@ Manual video annotation is a slow, labor-intensive, and costly process, often le
   
 
 ## 🌜 **Table of Contents**
-1.  [Introduction](#1.-introduction)
+1.  [Introduction](#introduction)
 2.  [Video Processing Features](#2.-video-processing-features)
 3.  [Tech Stack](#3.-tech-stack)
 4.  [Installation](#4.-installation)
-5.  [Usage](#5.-usage)
+5.  [Usage](#usage)
 6.  [API Endpoints](#6.-api-endpoints)
 7.  [Project Structure](#7.-project-structure)
 
