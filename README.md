@@ -36,7 +36,7 @@ This system is designed to streamline video annotation workflows, making large-s
 
 🎯 **Zero-shot detection → labeling → segmentation**  
 🎞️ **Customizable FPS** – Users can adjust the frames per second (FPS) to optimize processing time.  
-⏸️ **Interrupts for annotation refinement**:
+⏸️ **Interrupts for annotation refinement**:  
   🔹 **STOPPROCESS** – Users can stop the segmentation at any point and retrieve the segmented video up to that point.  
   🔹 **STOPDETECTION** – Users can halt new object detection while continuing segmentation of previously detected objects across the video.  
   🔹 **Refinement Interrupt** – Users can refine tight segmentation masks by adding positive/negative click labels for specific objects.  
@@ -66,10 +66,14 @@ Follow these steps to set up the project:
 ```sh
 # 📥 Clone the repository
 git clone https://git.acldigital.com/ai-ml/autolabelling.git
+```
 
+```sh
 # 📂 Navigate to the project directory
 cd Auto_labelling/
+```
 
+```sh
 # ⚙️ Run the setup script
 bash setup.sh
 ```
@@ -83,7 +87,7 @@ bash setup.sh
 python App.py
 ```
 
-### 📜 **API Calls**
+### 📜 **API Calls**  
 📄 Check the `api_call.txt` file for example API request commands.
 
 ---
@@ -120,10 +124,25 @@ python App.py
 
 We welcome contributions! 🎉 To contribute:
 
-1. **Fork the repository** 🍴
-2. **Create a new branch** (`feature-xyz`) 🌿
-3. **Make your changes and commit them** 💾
-4. **Push your branch and open a Pull Request** 🔀
+```sh
+# 🍴 Fork the repository
+git fork https://git.acldigital.com/ai-ml/autolabelling.git
+```
+
+```sh
+# 🌿 Create a new branch
+git checkout -b feature-xyz
+```
+
+```sh
+# 💾 Make your changes and commit them
+git commit -m "Added new feature"
+```
+
+```sh
+# 🔀 Push your branch and open a Pull Request
+git push origin feature-xyz
+```
 
 For detailed contribution guidelines, refer to `CONTRIBUTING.md`. 🛠️
 
