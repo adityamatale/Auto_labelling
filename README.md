@@ -2,15 +2,16 @@
 
 ## 📜 **Table of Contents**
 1. [📌 Introduction](#introduction)
-2. [🎥 Video Processing Features](#video-processing-features)
-3. [🛠️ Tech Stack](#tech-stack)
-4. [⚙️ Installation](#installation)
-5. [🚀 Usage](#usage)
-6. [🔗 API Endpoints](#api-endpoints)
-7. [📂 Project Structure](#project-structure)
-8. [🤝 Contributing](#contributing)
-9. [📜 License](#license)
-10. [🙏 Acknowledgments](#acknowledgments)
+   
+3. [🎥 Video Processing Features](#video-processing-features)
+4. [🛠️ Tech Stack](#tech-stack)
+5. [⚙️ Installation](#installation)
+6. [🚀 Usage](#usage)
+7. [🔗 API Endpoints](#api-endpoints)
+8. [📂 Project Structure](#project-structure)
+9. [🤝 Contributing](#contributing)
+10. [📜 License](#license)
+11. [🙏 Acknowledgments](#acknowledgments)
 
 ---
 
