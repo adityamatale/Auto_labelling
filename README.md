@@ -1,35 +1,36 @@
 # 🚀 **Auto Video Annotation System**
 Manual video annotation is a slow, labor-intensive, and costly process, often leading to inconsistencies. Traditional methods struggle to scale efficiently, making it difficult to generate high-quality, large-scale annotated datasets across different domains.  
-  
-
-## 🌜 **Table of Contents**
-1.  [Introduction](#1-introduction)
-2.  [Video Processing Features](#2-video-processing-features)
-3.  [Tech Stack](#3-tech-stack)
-4.  [Installation](#4-installation)
-5.  [Usage](#5-usage)
-6.  [API Endpoints](#6-api-endpoints)
-7.  [Project Structure](#7-project-structure)
 
 ---
-  
-## 📌 **1. Introduction**
+
+## 🌜 **Table of Contents**
+1.  [Introduction](#introduction)
+2.  [Video Processing Features](#video-processing-features)
+3.  [Tech Stack](#tech-stack)
+4.  [Installation](#installation)
+5.  [Usage](#usage)
+6.  [API Endpoints](#api-endpoints)
+7.  [Project Structure](#project-structure)
+
+---
+
+## 📌 **Introduction** {#introduction}
 
 ### 💡 **Solution Overview**  
 This **Auto Video Annotation System** leverages state-of-the-art AI models to automate video labeling, improving efficiency and scalability while maintaining accuracy.
 
 ### 🔥 **Key Features**  
-✅ **Automated Annotation Pipeline** – Uses advanced AI model [(*Grounding DINO*)](https://github.com/IDEA-Research/GroundingDINO) to detect and label objects in videos, reducing manual effort.  
+👉 **Automated Annotation Pipeline** – Uses advanced AI model [(*Grounding DINO*)](https://github.com/IDEA-Research/GroundingDINO) to detect and label objects in videos, reducing manual effort.  
 
-✅ **Scalable & Efficient System** – Built with a lightweight, high-performance FastAPI backend for seamless integration and large-scale data processing.  
+👉 **Scalable & Efficient System** – Built with a lightweight, high-performance FastAPI backend for seamless integration and large-scale data processing.  
 
-✅ **Optimized Video Processing** – Implements frame segmentation [(*SAM*)](https://github.com/facebookresearch/segment-anything) and propagation [(*SAMv2*)](https://github.com/SauravMaheshkar/samv2) to minimize redundant computation while maintaining accuracy.  
+👉 **Optimized Video Processing** – Implements frame segmentation [(*SAM*)](https://github.com/facebookresearch/segment-anything) and propagation [(*SAMv2*)](https://github.com/SauravMaheshkar/samv2) to minimize redundant computation while maintaining accuracy.  
 
-✅ **Reliable Info Monitoring** – Includes (*Supervision*) for annotation handling, and robust logging for debugging and consistency.  
+👉 **Reliable Info Monitoring** – Includes (*Supervision*) for annotation handling, and robust logging for debugging and consistency.  
 
 ---
 
-## 🎥 **2. Video Processing Features**
+## 🎥 **Video Processing Features** {#video-processing-features}
 
 🎯 **Zero-shot detection → labeling → segmentation**  
 
@@ -44,7 +45,7 @@ This **Auto Video Annotation System** leverages state-of-the-art AI models to au
 
 ---
 
-## 🛠️ **3. Tech Stack**
+## 🛠️ **Tech Stack** {#tech-stack}
 
 | 🖥️ Technology | 🔍 Purpose |
 |------------|---------|
@@ -60,7 +61,7 @@ This **Auto Video Annotation System** leverages state-of-the-art AI models to au
 
 ---
 
-## ⚙️ **4. Installation**
+## ⚙️ **Installation** {#installation}
 
 Follow these steps to set up the project:
 
@@ -77,7 +78,7 @@ bash setup.sh
 
 ---
 
-## 🚀 **5. Usage**
+## 🚀 **Usage** {#usage}
 
 ### ▶️ **Run the application**
 ```sh
@@ -89,9 +90,9 @@ Check the `api_call.txt` file for example API request commands.
 
 ---
 
-## 🔗 **6. API Endpoints**
+## 🔗 **API Endpoints** {#api-endpoints}
 
-| 📡 Method | 🔗 Endpoint | 📋 Description |
+| 📡 Method | 🔗 Endpoint | 📋l Description |
 |--------|---------|-------------|
 | ` POST` | `/upload` | Uploads a video for processing |
 | ` POST` | `/process` | Starts processing |
@@ -101,7 +102,7 @@ Check the `api_call.txt` file for example API request commands.
 
 ---
 
-## 📂 **7. Project Structure**
+## 💂️ **Project Structure** {#project-structure}
 
 ```
 /project-root
@@ -118,4 +119,3 @@ Check the `api_call.txt` file for example API request commands.
 ---
 
 This **Auto Video Annotation System** is built for efficiency and scalability. Happy annotating! 🎥🚀
-
