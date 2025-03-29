@@ -4,6 +4,7 @@ import shutil
 import logging
 import threading
 from datetime import datetime
+import re
 
 from tqdm import tqdm
 from uuid import uuid4
@@ -24,6 +25,7 @@ UPLOAD_DIR = "uploads"
 PROCESSED_DIR = "processed"
 PROGRESS_DIR = "progress"
 LOGS_DIR = "logs"
+INTERRUPT_DIR = "interrupts"
 
 # Ensure directories exist
 for directory in [UPLOAD_DIR, PROCESSED_DIR, PROGRESS_DIR, LOGS_DIR]:
@@ -32,6 +34,10 @@ for directory in [UPLOAD_DIR, PROCESSED_DIR, PROGRESS_DIR, LOGS_DIR]:
 # Dictionary to store task statuses
 tasks = {}
 
+# function to check the status before interrupting....only for 'processing...' and '$$% completed' 
+def contains_status(text):
+    pattern = r'Processing\.{3}|\b(?:[0-9]|[1-9][0-9])% completed\b'
+    return bool(re.search(pattern, text))
 
 
 # ------------------------ Logging Setup ------------------------
@@ -121,9 +127,9 @@ def track_progress(file_id: str):
 
 
 # ------------------------ Background Processing ------------------------
-def long_video_processing(file_id: str, input_classes: List[str]):
+def long_video_processing(file_id: str, input_classes: List[str], desired_fps: int):
     """ Runs the video processing function in the background """
-    logger.info(f" Processing started for {file_id} with classes: {input_classes}")
+    logger.info(f" Processing started for {file_id} with classes: {input_classes} at {desired_fps} FPS")
 
     input_path = os.path.join(UPLOAD_DIR, f"{file_id}.mp4")
     output_path = os.path.join(PROCESSED_DIR, f"{file_id}_processed.mp4")
@@ -135,31 +141,54 @@ def long_video_processing(file_id: str, input_classes: List[str]):
 
     tasks[file_id] = "Processing..."
 
+    # Save interrupt resumed
+    os.makedirs(INTERRUPT_DIR, exist_ok=True)
+    interrupt_file = os.path.join(INTERRUPT_DIR, f"interrupt_{file_id}.txt")
+    with open(interrupt_file, "w") as f:
+        f.write(str('Started')+'\n')
+
     # Start tracking progress
     progress_thread = threading.Thread(target=track_progress, args=(file_id,))
     progress_thread.start()
 
     try:
         # Call main processing function
-        main_func(input_path, output_path, input_classes, file_id)
+        main_func(input_path, output_path, input_classes, file_id, desired_fps)
         tasks[file_id] = "Completed"
         logger.info(f" Processing completed successfully for {file_id}")
+        print('processing completed in main')
     except Exception as e:
         tasks[file_id] = f"Failed - {str(e)}"
         logger.error(f" Error processing {file_id}: {str(e)}")
 
+    print('long_video_processing finished')
     progress_thread.join()
 
 
 # ------------------------ Start Processing Endpoint ------------------------
 @router.post("/process/")
-async def process_video(file_id: str = Form(...), classes: str = Form(...)):
+async def process_video(file_id: str = Form(...), classes: str = Form(...), desired_fps: int = Form(...)):
     """ Initiates video processing in a background thread """
+    
+    interrupt_file = os.path.join(INTERRUPT_DIR, f"interrupt_{file_id}.txt")
 
     input_path = os.path.join(UPLOAD_DIR, f"{file_id}.mp4")
+
     if not os.path.exists(input_path):
         logger.error(f"Processing failed: File {file_id} not found.")
         return JSONResponse(content={"error": "File not found"}, status_code=404)
+    
+    if os.path.exists(interrupt_file):
+        print('file exists')
+        with open(interrupt_file, "r") as f:
+            progress = f.read().strip()
+        if progress == "Ended":
+            print('endeddd')
+            if processing_lock.locked():  # ✅ Check before releasing
+                processing_lock.release()
+                print('lock released because processing ended')
+
+
 
     # Prevent multiple videos from being processed simultaneously
     if processing_lock.locked():
@@ -173,13 +202,55 @@ async def process_video(file_id: str = Form(...), classes: str = Form(...)):
     def video_processing_wrapper():
         """ Wrapper to ensure the lock is released after processing """
         with processing_lock:
-            long_video_processing(file_id, input_classes)
-    
+            long_video_processing(file_id, input_classes,desired_fps)
+        # processing_lock.acquire()
+        # try:
+        #     long_video_processing(file_id, input_classes)
+        #     print('processing completed in TRY')
+        # finally:
+        #     # if processing_lock.locked():  # ✅ Double-check before releasing
+        #     processing_lock.release()
+        #     print('processing completed in FINALLY')
+
+
     # Start background processing with lock control
     threading.Thread(target=video_processing_wrapper, daemon=True).start()
 
-    return {"file_id": file_id, "message": "Processing started", "input_classes": input_classes}
+    return {"file_id": file_id, "message": "Processing started", "input_classes": input_classes, "fps": desired_fps}
 
+# ------------------------ Interrupt Processing Endpoint ------------------------
+@router.post("/interrupt/{STOP}")
+async def interrupt_processing(file_id: str = Form(...), frame_num: int = Form(...), STOP: str = None, IOU: float=None):
+    """ Allows users to interrupt the video processing process """
+    logger.info(f" Interrupt request received for {file_id} at frame {frame_num}")
+
+    # IOU is a query parameter...
+    if IOU:
+        print('IOU threshold set to: ', IOU)
+
+    progress_file = os.path.join(PROGRESS_DIR, f"progress_{file_id}.txt")
+    if os.path.exists(progress_file):
+        # Check if the video is currently being processed
+        if file_id in tasks and contains_status(tasks[file_id]):
+            os.makedirs(INTERRUPT_DIR, exist_ok=True)
+            interrupt_file = os.path.join(INTERRUPT_DIR, f"interrupt_{file_id}.txt")
+
+            # Ensure STOP is either "STOP" or "STOPDETECTION", else default to "Interrupted"
+            valid_stop_values = {"STOPPROCESS", "STOPDETECTION"}
+            content = STOP if STOP in valid_stop_values else "Interrupted"
+
+            # Save progress
+            with open(interrupt_file, "w") as f:
+                f.write(content + '\n')
+
+            logger.info(f" Interrupt successful for {file_id} with status: {content}")
+            return {"file_id": file_id, "message": "Processing interrupted", "frame_num": frame_num, "status": content}
+        else:
+            logger.warning(f" Interrupt failed: {file_id} is not currently being processed")
+            return JSONResponse(content={"error": "Video is not being processed"}, status_code=400)
+    
+    logger.warning(f" Interrupt failed: Process {file_id} not started")
+    return JSONResponse(content={"error": "Process not started"}, status_code=404)
 
 # ------------------------ Check Processing Status ------------------------
 @router.get("/status/{file_id}")
