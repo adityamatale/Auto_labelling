@@ -17,15 +17,15 @@ from samv2.sam2.utils.misc import variant_to_config_mapping
 DEVICE="cpu"
 
 #Load Gounding DINO model
-grounding_dino_model = Model(model_config_path=GROUNDING_DINO_CONFIG_PATH, model_checkpoint_path=GROUNDING_DINO_CHECKPOINT_PATH)
+grounding_dino_model = Model(model_config_path=GROUNDING_DINO_CONFIG_PATH, model_checkpoint_path=GROUNDING_DINO_CHECKPOINT_PATH, device=DEVICE)
 
-#Load SAM and SAM2 models
+#Load SAM model
 SAM_ENCODER_VERSION = "vit_b"
 
 sam = sam_model_registry[SAM_ENCODER_VERSION](checkpoint=SAM_CHECKPOINT_PATH).to(device=DEVICE)
 sam_predictor = SamPredictor(sam)
 print('Success of sam_predictor')
 
+#Load SAMv2 model
 sam2_model = build_sam2_video_predictor(variant_to_config_mapping["tiny"], SAM2_CHECKPOINT_PATH_CPU)
 print('Success of sam2_model')
-
